@@ -1,0 +1,31 @@
+.link-no-decoration {
+    border: none;
+}
+
+.count-btn{
+
+    border-color: #D3D4D8;
+    border-style: solid;
+    border-width: 1px;
+    text-align: center;
+
+
+}
+
+@media only screen and (max-width: 600px) {
+  .count-btn{
+
+    border-color: #D3D4D8;
+    border-style: solid;
+    border-width: 1px;
+    text-align: center;
+    width: 90px;
+
+}
+
+.link-no-decoration {
+    border: none;
+    padding: 0 0 0 8px;
+
+}
+}
