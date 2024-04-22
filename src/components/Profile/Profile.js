@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
@@ -6,19 +6,21 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
-import { useProfile } from "../../Contexts/UserContext";
+import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
+import { setUserName, setEmail, setIsAuthenticated } from "../../redux/reducers";
 
 const Profile = () => {
 
-    const { profile, setProfile } = useProfile();
+    const dispatch = useDispatch();
+
     const [show, setShow] = useState(false);
     const [UserForm, setUserForm] = useState({ "name": "", "email": "", "address": "" })
+    const user_id = useSelector(state => state.rootReducer.profile.user_id);
+    const profile = useSelector(state => state.rootReducer.profile);
 
     const UpdateProfile = () => {
 
-        setProfile(UserForm);
-        setUserForm({ "name": "", "email": "", "address": "" });
-        setShow(false)
 
 
     }
@@ -35,38 +37,86 @@ const Profile = () => {
 
     }
 
-    useEffect(()=>{
+    const getProfile = async () => {
 
-        setUserForm({ "name": profile.name, "email": profile.email, "address": profile.address })
+        if (user_id) {
 
-    },[profile])
+            try {
+
+                const url = "https://api.selfmade.city/api/users/profile/" + user_id
+
+                const result = await axios.get(url)
+
+                console.log(result.data)
+                if (result.data && result.data.status === "success") {
+
+                    dispatch(setUserName(result.data.data.username))
+                    dispatch(setEmail(result.data.data.email))
+
+                }
+
+            } catch (error) {
+
+
+            }
+
+
+        }
+
+
+
+    }
+
+    useEffect(() => {
+        console.log("profile did mount")
+
+        getProfile()
+
+        return () =>{
+
+            console.log("profile did un mount")
+
+        }
+
+    }, [])
+
+
 
     return (
 
 
         < Container className=" mt-5" >
-           
             <Row className="mt-5 justify-content-center">
                 <Col className="mt-5 col-md-8">
-                    <Card>
+                    {profile.username && profile.email && (<Card>
                         <Card.Header>Profile</Card.Header>
-                        {profile && (
-                            
-                            <Card.Body>
-                                <Card.Title>Name</Card.Title>
-                                <Form.Control disabled placeholder={profile.name} />
-                                <Card.Title>Email</Card.Title>
-                                <Form.Control disabled placeholder={profile.email} />
-                                <Card.Title>Address</Card.Title>
-                                <Form.Control disabled placeholder={profile.address} />
-                                <br />
-                                <div className="text-center">
-                                    <Button variant="primary" onClick={ShowModel}>Edit</Button>
-                                </div>
-                            </Card.Body>
 
-                        )}
-                    </Card>
+                        <Card.Body>
+                            <Card.Title>Name</Card.Title>
+                            <Form.Control disabled placeholder={profile.username} />
+                            <Card.Title>Email</Card.Title>
+                            <Form.Control disabled placeholder={profile.email} />
+                            <Card.Title>Address</Card.Title>
+                            <Form.Control disabled placeholder={profile.address} />
+                            <br />
+                        </Card.Body>
+
+                        <Card.Footer>
+
+                            <Row>
+                                <Col>
+                                    <div className="text-center">
+                                        <Button variant="primary" onClick={ShowModel}>Edit</Button>
+                                    </div>
+                                </Col>
+                                <Col>
+                                    <div className="text-center">
+                                        <Button variant="danger" onClick={() => { localStorage.removeItem('access_token'); dispatch(setIsAuthenticated(false)); window.location = '/' }}>Logout</Button>
+                                    </div>
+                                </Col>
+                            </Row>
+                        </Card.Footer>
+                    </Card>)}
                 </Col>
             </Row>
             <Row>

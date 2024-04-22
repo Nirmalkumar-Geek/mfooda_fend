@@ -1,17 +1,25 @@
-import React from "react";
-import { Navigate, Outlet } from "react-router-dom"; // Using Navigate for redirects
-import { useAuth } from "../../Contexts/AuthProvider";
+import React, { useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-const PrivateRoute = ({ children }) => {
-    const { isAuthenticated } = useAuth();
+const PrivateRoute = ({ element: Element, path }) => {  
 
-    if (!isAuthenticated) {
-        // Redirect to login page if not authenticated
-        return <Navigate to="/signin" replace />;
-    }
+    useEffect(() => {
 
-    // Render the protected component if authenticated
-    return children || <Outlet />;
+        console.log("PrivateRoute did mount")
+
+        return () => {
+
+            console.log("PrivateRoute did un mount")
+
+        }
+
+    })
+
+
+    const isLoggedIn = useSelector(state => state.rootReducer.session.isAuthenticated);
+
+    return isLoggedIn ? <Element /> : <Navigate to='/login' />;
 };
 
 export default PrivateRoute;

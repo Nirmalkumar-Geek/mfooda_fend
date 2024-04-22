@@ -1,4 +1,4 @@
-import { faMagnifyingGlass, faHandshakeAngle, faUser, faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faHandshakeAngle, faUser, faCartShopping, faTruck } from '@fortawesome/free-solid-svg-icons';
 const Navitems = [
 
     {
@@ -6,12 +6,6 @@ const Navitems = [
         "name": "Search",
         "icon": faMagnifyingGlass,
         "link": "/search"
-    },
-    {
-        "id": 2,
-        "name": "Help",
-        "icon": faHandshakeAngle,
-        "link": "/help"
     },
     {
         "id": 3,
@@ -24,6 +18,11 @@ const Navitems = [
         "name": "Cart",
         "icon": faCartShopping,
         "link": "/cart"
+    }, {
+        "id": 5,
+        "name": "Orders",
+        "icon": faTruck,
+        "link": "/orders"
     },
 
 

@@ -1,0 +1,24 @@
+#order-menu{
+
+  border-top: 1px solid #b3b3b3;
+  margin-top: 3px;
+  margin-bottom: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-family: 'Basis Grotesque Pro', sans-serif;
+  font-weight: 700;
+
+}
+#order-group-2{
+
+    border-top: 1px solid #b3b3b3;
+    margin-top: 8px;
+    
+}
+
+#order-id{
+
+  font-family: 'Basis Grotesque Pro', sans-serif;
+  font-weight: 700;
+
+}

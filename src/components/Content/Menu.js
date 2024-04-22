@@ -4,111 +4,122 @@ import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import menu from "../../utils/MenuUtils";
 import { useParams } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
+import { add_item, remove_item, setMenuItems } from "../../redux/reducers";
+import axios from "axios";
+import OptimizedImage from "../Order/OptimizedImage";
 
 const Menu = () => {
 
-    const [items, setItems] = useState(null);
-    const [btn, setBtn] = useState({}); // Initialize btn state as an empty object
-    const [count, setCount] = useState({});
+    const itemss = useSelector((state) => state.rootReducer.cart.items);
+    const menuItems = useSelector((state) => state.rootReducer.menu.menuItems);
+    const details = useSelector((state) => state.rootReducer.cart);
 
-    const { restaurant_name } = useParams();
+    const dispatch = useDispatch();
+
+    const { restaurant_id } = useParams();
+
+    const GetMenu = async (id) => {
+
+        try {
+
+
+            const result = await axios.get('https://api.selfmade.city/api/menu/' + id)
+
+            console.log(result.data)
+
+            if (result.data && result.data.status == "success") {
+
+                dispatch(setMenuItems(result.data.data))
+
+            } else if (result.data && result.data.status == "error" && result.data.data === null) {
+
+                dispatch(setMenuItems({}))
+
+            }
+
+
+        } catch (error) {
+
+
+
+            console.log(error)
+
+        }
+
+    }
+
+
 
     useEffect(() => {
-        if (menu[restaurant_name]) {
-            setItems(menu[restaurant_name]);
 
-            // Initialize the btn state with keys as index and value as false
-            let item_count = {};
-            let initialBtnState = {};
-            menu[restaurant_name].forEach((value, index) => {
-                initialBtnState[index] = false;
-                item_count[index] = 0;
-            });
-            setBtn(initialBtnState);
-            setCount(item_count);
-            console.log(item_count)
-        }
-    }, [restaurant_name]);
+        GetMenu(restaurant_id)
 
-    const handleAddToCart = (index) => {
-        setBtn(prevState => ({
-            ...prevState, // Keep the previous state
-            [index]: true // Update the specific button state to true
-        }));
-    };
+    }, [restaurant_id]);
 
-    const increaseCount = (index) => {
+    const increaseCount = (index, item_name, item_price) => {
 
-        setCount(prevState => (
+        let item = { id: null, name: null, price: null, count: 1 }
 
-            {
+        item.id = index
+        item.name = item_name
+        item.price = item_price
 
-                ...prevState,
-                [index]: count[index] + 1
+        dispatch(add_item({ restaurant_id, item }))
 
-
-            }
-
-        )
-
-        )
 
     };
 
-    const decreaseCount = (index) =>{
-
-        setCount(prevState =>(
-
-            {
-
-                ...prevState,
-                [index] : count[index] - 1
-
-            }
+    const decreaseCount = (index) => {
 
 
-        )
 
-
-        )
+        dispatch(remove_item({ index }))
 
 
     }
 
+
+
     return (
         <div>
             <Container className="mt-5">
+                {console.log(details)}
                 <Row>
-                    {items && items.map((value, index) => {
+                    {Object.keys(menuItems).length != 0 && Object.keys(menuItems).map((key) => {
                         return (
-                            <Col key={index} className="mt-5" >
+                            <Col key={key} className="mt-5" >
                                 <Card style={{ width: '18rem' }} className="mx-auto border-0 bg-light">
-                                    <Card.Img variant="top" src={value.image} className="rounded" />
+                                    <OptimizedImage
+                                        src={"https://api.selfmade.city/" + menuItems[key].img_path}
+                                        alt="Example Image"
+                                        title="Example Title"
+                                    />
                                     <Card.Body style={{ textAlign: "left" }}>
-                                        <Card.Title>{value.name}</Card.Title>
+                                        <Card.Title>{menuItems[key].item_name}</Card.Title>
                                         <Card.Text>
-                                            RM {value.price}
+                                            RM {menuItems[key].price}
                                         </Card.Text>
                                         <div style={{ textAlign: "center" }}>
-                                            {count[index] ? (
+                                            {console.log(menuItems[key])}
+                                            {itemss[key] ? (
                                                 <>
                                                     <Row className="text-center" >
                                                         <Col className="p-0 " >
-                                                            <Button variant="danger" onClick={() => decreaseCount(index)}>-</Button>
+                                                            <Button variant="danger" onClick={() => decreaseCount(key)}>-</Button>
                                                         </Col>
                                                         <Col className="p-0 m-0">
-                                                            <h2 className="m-0">{count[index]}</h2>
+                                                            <h2 className="m-0">{itemss[key].count}</h2>
                                                         </Col>
                                                         <Col className="p-0">
-                                                            <Button variant="danger" onClick={() => increaseCount(index)}>+</Button>
+                                                            <Button variant="danger" onClick={() => increaseCount(key, menuItems[key].item_name, menuItems[key].price)}>+</Button>
                                                         </Col>
                                                     </Row>
                                                 </>
 
                                             ) : (
-                                                    <Button variant="success" onClick={() => increaseCount(index)}>Add to Cart</Button>
+                                                <Button variant="success" onClick={() => increaseCount(key, menuItems[key].item_name, menuItems[key].price)}>Add to Cart</Button>
                                             )}
                                         </div>
                                     </Card.Body>

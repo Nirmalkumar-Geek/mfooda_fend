@@ -1,53 +1,44 @@
-import React, { useEffect } from "react";
-import CNavBar from "./components/Nav/NavBar";
-import './App.css'
-import Restaurant from "./components/Content/Restaurants";
-import { Routes, Route, useNavigate } from "react-router-dom";
-import Menu from "./components/Content/Menu";
-import Signin from "./components/Signin/Signin";
-import { useAuth } from "./Contexts/AuthProvider";
-import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
-import Profile from "./components/Profile/Profile";
-import { UserProvider } from "./Contexts/UserContext";
-import Cart from "./components/Cart/Cart";
+import React, { Suspense,useEffect } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
+import './App.css'
+
+
+const Login = React.lazy(() => import('./components/Signin/Signin'))
+const Register = React.lazy(() => import('./components/Registration/Registration'))
+const Spinner = React.lazy(() => import('./components/Payment/Spinner'))
+const DefaultLayout = React.lazy(() => import('./components/DefaultLayout/DefaultLayout'))
 
 function App() {
 
-  const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
 
-  useEffect(() => {
+  useEffect(()=>{
 
-    if (!isAuthenticated) {
+    console.log("App did  mount")
 
-      console.log("need to redirect")
-      navigate('/signin');
+      return () =>{
 
-    }
+        console.log("App did un mount")
 
-  }, [isAuthenticated, navigate])
+      }
+
+  })
+
 
   return (
+
     <div className='App'>
-
-      {isAuthenticated && <CNavBar />}
-
-      <UserProvider>
-
-        <Routes>
-          <Route path="/signin" element={<Signin />} />
-          <Route path="/profile" element={<PrivateRoute > <Profile /> </PrivateRoute>} />
-          <Route path="/cart" element={<PrivateRoute > <Cart /> </PrivateRoute>} />
-          <Route path="/" element={<PrivateRoute > <Restaurant /> </PrivateRoute>} />
-          <Route path="/restaurants/:restaurant_name" element={<PrivateRoute path='/restaurants/:restaurant_name'> <Menu /> </PrivateRoute>} />
-        </Routes>
-
-      </UserProvider>
-      
-
-
+      <BrowserRouter>
+        <Suspense fallback={<Spinner />}>
+          <Routes>
+            <Route exact path='/login' name="Login Page" element={<Login />} />
+            <Route exact path='/register' name="Registration Page" element={<Register />} />
+            <Route exact path='*' name="Default Page" element={<DefaultLayout />} />
+          </Routes>
+        </Suspense>
+      </BrowserRouter>
     </div>
+
   );
 }
 

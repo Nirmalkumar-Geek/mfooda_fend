@@ -2,7 +2,7 @@
 
 const menu = {
 
-    "my restaurant": [
+    "my restaurant1": [
 
         { "name": "CHICKEN CHIZZA (1)", "price": "388", "image": "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_208,h_208,c_fit/19e37f4ea1613fe129534d0d6c2447d6" },
         { "name": "CHICKEN CHIZZA (2)", "price": "388", "image": "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_208,h_208,c_fit/19e37f4ea1613fe129534d0d6c2447d6" },
