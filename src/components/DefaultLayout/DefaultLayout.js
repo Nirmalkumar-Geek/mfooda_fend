@@ -16,6 +16,7 @@ const CheckOut = React.lazy(() => import('../../components/CheckOut/CheckOut'))
 const OrderSuccess = React.lazy(() => import('../../components/Order/OrderSuccess'))
 const Loader = React.lazy(() => import('../../components/Payment/Loader'))
 const OrderTracker = React.lazy(() => import('../../components/Order/TrackOrder'))
+const Search = React.lazy(() => import('../../components/Search/Search'))
 
 const DefaultLayout = () => {
 
@@ -45,7 +46,8 @@ const DefaultLayout = () => {
                     <Route path="/profile" element={<PrivateRoute element={Profile} />} />
                     <Route path="/checkout" element={<PrivateRoute element={CheckOut} />} />
                     <Route path="/orders" element={<PrivateRoute element={Order} />} />
-                    
+                    <Route path="/search" element={<PrivateRoute element={Search} />} />
+
                     <Route path="/payment-success" element={<OrderSuccess />} />
                     <Route path='*' element={<NotFound />} />
                 </Routes>

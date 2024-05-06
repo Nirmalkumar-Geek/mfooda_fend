@@ -44,6 +44,7 @@ const Cart = () => {
 
 
         < Container className=" mt-5" >
+            {console.log(details)}
 
             {Object.keys(items).length ? (
                 <>

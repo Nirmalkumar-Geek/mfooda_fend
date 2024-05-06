@@ -1,6 +1,5 @@
 import React, { Suspense,useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-
 import './App.css'
 
 
@@ -16,13 +15,15 @@ function App() {
 
     console.log("App did  mount")
 
+  
+
       return () =>{
 
         console.log("App did un mount")
 
       }
 
-  })
+  },[])
 
 
   return (

@@ -50,31 +50,46 @@ const registration = createSlice({
 
     name: "registration",
     initialState: {
-        username: "",
-        email: "",
-        password: "",
-        confirmpassword: "",
+        username: { value: "", valide: false, inValide: false },
+        email: { value: "", valide: false, inValide: false },
+        phone_number: { value: "", valide: false, inValide: false },
+        password: { value: "", valide: false, inValide: false },
+        confirmpassword: { value: "", valide: false, inValide: false },
     },
     reducers: {
 
         setRegUsername: (state, action) => {
 
-            state.username = action.payload
+            state.username.value = action.payload
 
         },
         setRegEmail: (state, action) => {
 
-            state.email = action.payload
+            state.email.value = action.payload
+
+        },
+        setRegPhoneNumber: (state, action) => {
+
+            state.phone_number.value = action.payload
 
         },
         setRegPassword: (state, action) => {
 
-            state.password = action.payload
+            state.password.value = action.payload
 
         },
         setConfirmPassword: (state, action) => {
 
-            state.confirmpassword = action.payload
+            state.confirmpassword.value = action.payload
+
+        },
+        restRegForm: (state,action) =>{
+
+            state.username.value = " "
+            state.email.value = ""
+            state.phone_number.value = ""
+            state.password.value = ""
+            state.confirmpassword.value = ""
 
         }
 
@@ -90,6 +105,7 @@ const profile = createSlice({
         user_id: "",
         username: "",
         email: "",
+        phone_number: ""
     },
     reducers: {
 
@@ -106,6 +122,11 @@ const profile = createSlice({
         setEmail: (state, action) => {
 
             state.email = action.payload
+
+        },
+        setPhoneNumber: (state,action) =>{
+
+            state.phone_number = action.payload
 
         }
 
@@ -166,7 +187,7 @@ const cartSlice = createSlice({
             const id = action.payload.restaurant_id
             const item = action.payload.item
 
-        
+
             if (state.restaurant_id === null) {
 
                 console.log("from condition")
@@ -191,7 +212,7 @@ const cartSlice = createSlice({
             if (Object.keys(state.items).length === 0) {
 
                 state.items[item.id] = item
-                
+
 
 
             } else {
@@ -215,7 +236,7 @@ const cartSlice = createSlice({
 
                 }
 
-                
+
 
             }
 
@@ -241,7 +262,7 @@ const cartSlice = createSlice({
             }
 
         },
-        clearCart: (state) =>{
+        clearCart: (state) => {
 
             state.restaurant_name = null
             state.restaurant_id = null
@@ -269,8 +290,8 @@ const rootReducer = combineReducers({
 
 export const { setIsAuthenticated, setAccessToken } = session.actions
 export const { add_item, remove_item, clearCart } = cartSlice.actions
-export const { setEmail, setUserID, setUserName, } = profile.actions
-export const { setRegEmail, setRegUsername, setRegPassword, setConfirmPassword } = registration.actions
+export const { setEmail, setUserID, setUserName, setPhoneNumber } = profile.actions
+export const { setRegEmail, setRegUsername, setRegPassword, setConfirmPassword, setRegPhoneNumber, restRegForm } = registration.actions
 export const { setLoginEmail, setLoginPassword } = login.actions
 export const { setRestaurants } = restaurants.actions
 export const { setMenuItems } = menu.actions

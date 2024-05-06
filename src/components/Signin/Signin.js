@@ -11,6 +11,7 @@ import { Navigate } from "react-router-dom";
 import axios from "axios";
 import Alert from 'react-bootstrap/Alert';
 import { jwtDecode } from "jwt-decode";
+import { Link } from "react-router-dom";
 
 
 const Signin = () => {
@@ -126,7 +127,7 @@ const Signin = () => {
                                                     
                                             </div>
                                         </Form>
-
+                                            <p className="mt-3 text-center">Don't have an account yet? <Link to='/register'>Register</Link></p>
                                     </Card.Body>
                                 </Card>
 

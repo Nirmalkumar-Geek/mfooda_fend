@@ -50,8 +50,6 @@ const Menu = () => {
 
     }
 
-
-
     useEffect(() => {
 
         GetMenu(restaurant_id)
@@ -80,8 +78,6 @@ const Menu = () => {
 
     }
 
-
-
     return (
         <div>
             <Container className="mt-5">
@@ -89,7 +85,7 @@ const Menu = () => {
                 <Row>
                     {Object.keys(menuItems).length != 0 && Object.keys(menuItems).map((key) => {
                         return (
-                            <Col key={key} className="mt-5" >
+                            <Col key={key} xs={12} sm={6} md={4} lg={3} className="mt-5" >
                                 <Card style={{ width: '18rem' }} className="mx-auto border-0 bg-light">
                                     <OptimizedImage
                                         src={"https://api.selfmade.city/" + menuItems[key].img_path}

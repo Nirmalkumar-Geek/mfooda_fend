@@ -8,20 +8,42 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
-import { setUserName, setEmail, setIsAuthenticated } from "../../redux/reducers";
+import { setUserName, setEmail, setIsAuthenticated, setPhoneNumber } from "../../redux/reducers";
 
 const Profile = () => {
 
     const dispatch = useDispatch();
 
     const [show, setShow] = useState(false);
-    const [UserForm, setUserForm] = useState({ "name": "", "email": "", "address": "" })
+    const [UserForm, setUserForm] = useState({ "name": "", "email": "", "phone_number": "" })
     const user_id = useSelector(state => state.rootReducer.profile.user_id);
     const profile = useSelector(state => state.rootReducer.profile);
 
-    const UpdateProfile = () => {
+    const UpdateProfile = async () => {
 
+            try{
 
+                const payload = { "user_id": user_id, "username": UserForm.name, "email": UserForm.email, "phone_number": UserForm.phone_number }
+
+                const update_result =await  axios.put('https://api.selfmade.city/api/users/profile', payload)
+
+                if (update_result.data && update_result.data.status === "success"){
+
+                    getProfile()
+                    console.log(update_result)
+
+                }else{
+
+                    getProfile()
+                    console.log(update_result)
+
+                }
+
+            }catch(error){
+
+                console.log(error)
+
+            }
 
     }
 
@@ -32,8 +54,13 @@ const Profile = () => {
     }
 
     const HideModel = () => {
-
+        
         setShow(false);
+        setUserForm({
+            name: profile.username,
+            email: profile.email,
+            phone_number: profile.phone_number
+        });
 
     }
 
@@ -47,16 +74,23 @@ const Profile = () => {
 
                 const result = await axios.get(url)
 
-                console.log(result.data)
+                console.log(result)
                 if (result.data && result.data.status === "success") {
 
                     dispatch(setUserName(result.data.data.username))
                     dispatch(setEmail(result.data.data.email))
+                    dispatch(setPhoneNumber(result.data.data.phone_number))
+                    setUserForm({
+                        name: result.data.data.username,
+                        email: result.data.data.email,
+                        phone_number: result.data.data.phone_number
+                    });
 
                 }
 
             } catch (error) {
 
+                console.log(error)
 
             }
 
@@ -86,6 +120,8 @@ const Profile = () => {
 
 
         < Container className=" mt-5" >
+            {console.log(profile)}
+            {console.log(UserForm)}
             <Row className="mt-5 justify-content-center">
                 <Col className="mt-5 col-md-8">
                     {profile.username && profile.email && (<Card>
@@ -96,8 +132,8 @@ const Profile = () => {
                             <Form.Control disabled placeholder={profile.username} />
                             <Card.Title>Email</Card.Title>
                             <Form.Control disabled placeholder={profile.email} />
-                            <Card.Title>Address</Card.Title>
-                            <Form.Control disabled placeholder={profile.address} />
+                            <Card.Title>Phone Number</Card.Title>
+                            <Form.Control disabled placeholder={profile.phone_number} />
                             <br />
                         </Card.Body>
 
@@ -140,7 +176,7 @@ const Profile = () => {
                                 <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
                                     <Form.Label>Email</Form.Label>
                                     <Form.Control
-
+                                        value={UserForm.email}
                                         type="email"
                                         placeholder="name@example.com"
                                         onChange={(event) => { let email = event.target.value; setUserForm({ ...UserForm, "email": email }) }}
@@ -150,12 +186,14 @@ const Profile = () => {
                                     className="mb-3"
                                     controlId="exampleForm.ControlTextarea1"
                                 >
-                                    <Form.Label>Address</Form.Label>
+                                    <Form.Label>Phone Number</Form.Label>
                                     <Form.Control
-
-                                        as="textarea"
+                                        value={UserForm.phone_number}
+                                        placeholder="1234567890"
+                                        as="input"
+                                        type="tel"
                                         rows={3}
-                                        onChange={(event) => { let address = event.target.value; setUserForm({ ...UserForm, "address": address }) }}
+                                        onChange={(event) => { let phone_number = event.target.value; setUserForm({ ...UserForm, "phone_number": phone_number }) }}
                                     />
                                 </Form.Group>
                             </Form>
@@ -164,7 +202,7 @@ const Profile = () => {
                             <Button variant="secondary" onClick={HideModel}>
                                 Close
                             </Button>
-                            <Button variant="primary" onClick={UpdateProfile}>
+                            <Button variant="primary" onClick={() => { UpdateProfile(); HideModel();}}>
                                 Save
                             </Button>
                         </Modal.Footer>
