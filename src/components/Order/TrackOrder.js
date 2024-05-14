@@ -23,7 +23,7 @@ const OrderTracker = () => {
 
         try {
             const payload = { "customer_id": user_id, "order_id": order_id }
-            const order_info = await axios.post('https://api.selfmade.city/api/orders/order-info', payload)
+            const order_info = await axios.post(process.env.REACT_APP_API_HOST + '/api/orders/order-info', payload)
 
             if (order_info.data && order_info.data.status === 'success') {
 
@@ -42,7 +42,7 @@ const OrderTracker = () => {
 
         try {
             const payload = { "rating": rating, "review": review, "order_id": order_id }
-            const order_rating = await axios.post('https://api.selfmade.city/api/orders/rating', payload)
+            const order_rating = await axios.post(process.env.REACT_APP_API_HOST + '/api/orders/rating', payload)
 
             console.log("reating response",order_rating.data)
             if (order_rating.data.status === 'success') {
@@ -71,7 +71,7 @@ const OrderTracker = () => {
 
             try {
                 const payload = { "customer_id": user_id, "order_id": order_id }
-                const order_info = await axios.post('https://api.selfmade.city/api/orders/order-info', payload)
+                const order_info = await axios.post(process.env.REACT_APP_API_HOST + '/api/orders/order-info', payload)
                 console.log(order_info)
 
                 if (order_info.data && order_info.data.status === 'success') {

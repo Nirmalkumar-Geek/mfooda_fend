@@ -46,7 +46,7 @@ const Register = () => {
                 "confirmpassword": confirmPassword
             }
             console.log(payload)
-            const result = await axios.post('https://api.selfmade.city/api/auth/users/registration', payload)
+            const result = await axios.post(process.env.REACT_APP_API_HOST + '/api/auth/users/registration', payload)
             console.log(result)
             if (result.data.status === 'success') {
 

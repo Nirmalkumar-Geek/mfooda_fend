@@ -20,7 +20,7 @@ const Order = () => {
         try{
 
             console.log(profile.user_id)
-            const result = await axios.get("https://api.selfmade.city/api/orders/" + profile.user_id)
+            const result = await axios.get(process.env.REACT_APP_API_HOST + "/api/orders/" + profile.user_id)
 
             console.log(result)
 

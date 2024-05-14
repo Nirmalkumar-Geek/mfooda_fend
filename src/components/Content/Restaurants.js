@@ -27,7 +27,7 @@ const Restaurant = () => {
 
             setLoading(true)
 
-            const result = await axios.get('https://api.selfmade.city/api/restaurants')
+            const result = await axios.get(process.env.REACT_APP_API_HOST + '/api/restaurants')
 
             if (result.data && result.data.status == "success") {
 
@@ -73,7 +73,7 @@ const Restaurant = () => {
         const getRestaurants_poling = async () => {
 
             try {
-                const result = await axios.get('https://api.selfmade.city/api/restaurants')
+                const result = await axios.get(process.env.REACT_APP_API_HOST + '/api/restaurants')
 
                 console.log(result)
 
@@ -143,7 +143,7 @@ const Restaurant = () => {
 
                                                     <Card style={{ width: '17rem' }} className="mx-auto border-0">
                                                         <OptimizedImage
-                                                            src={"https://api.selfmade.city/" + restaurants[key].banner_path}
+                                                            src={process.env.REACT_APP_API_HOST + "/" + restaurants[key].banner_path}
                                                             alt="Example Image"
                                                             title="Example Title"
                                                         />

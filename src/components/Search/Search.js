@@ -24,7 +24,7 @@ const Search = () => {
     const getRestaurants = async () => {
         try {
             setLoading(true);
-            const result = await axios.get('https://api.selfmade.city/api/restaurants');
+            const result = await axios.get(process.env.REACT_APP_API_HOST + '/api/restaurants');
             if (result.data && result.data.status === "success") {
                 if (result.data.data) {
                     dispatch(setRestaurants(result.data.data));
@@ -48,7 +48,7 @@ const Search = () => {
     useEffect(() => {
         const getRestaurantsPolling = async () => {
             try {
-                const result = await axios.get('https://api.selfmade.city/api/restaurants');
+                const result = await axios.get(process.env.REACT_APP_API_HOST + '/api/restaurants');
                 if (result.data && result.data.status === "success") {
                     if (result.data.data) {
                         dispatch(setRestaurants(result.data.data));
@@ -104,7 +104,7 @@ const Search = () => {
                                     <Link to={"/restaurants/" + key} style={{ "textDecoration": "none" }}>
                                         <Card style={{ width: '17rem' }} className="mx-auto border-0">
                                             <OptimizedImage
-                                                src={"https://api.selfmade.city/" + filteredRestaurants[key].banner_path}
+                                                src={process.env.REACT_APP_API_HOST + "/" + filteredRestaurants[key].banner_path}
                                                 alt="Example Image"
                                                 title="Example Title"
                                             />

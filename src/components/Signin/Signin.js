@@ -58,7 +58,7 @@ const Signin = () => {
         try {
 
             const credentials = { "email": email, "password": password }
-            const result = await axios.post("https://api.selfmade.city/api/auth/users/signin", credentials)
+            const result = await axios.post(process.env.REACT_APP_API_HOST + "/api/auth/users/signin", credentials)
 
             if (result.data && result.data.status === "success") {
 

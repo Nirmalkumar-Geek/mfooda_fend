@@ -25,7 +25,7 @@ const Menu = () => {
         try {
 
 
-            const result = await axios.get('https://api.selfmade.city/api/menu/' + id)
+            const result = await axios.get(process.env.REACT_APP_API_HOST+'/api/menu/' + id)
 
             console.log(result.data)
 
@@ -88,7 +88,7 @@ const Menu = () => {
                             <Col key={key} xs={12} sm={6} md={4} lg={3} className="mt-5" >
                                 <Card style={{ width: '18rem' }} className="mx-auto border-0 bg-light">
                                     <OptimizedImage
-                                        src={"https://api.selfmade.city/" + menuItems[key].img_path}
+                                        src={process.env.REACT_APP_API_HOST+"/"+menuItems[key].img_path}
                                         alt="Example Image"
                                         title="Example Title"
                                     />

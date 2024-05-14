@@ -24,7 +24,7 @@ const CheckoutForm = () => {
     const handleClick = async () => {
         setLoading(true);
         try {
-            const response = await axios.post('https://api.selfmade.city/api/order/checkout', {
+            const response = await axios.post(process.env.REACT_APP_API_HOST + '/api/order/checkout', {
                 // Add any payload if needed
             });
             const session = response.data;

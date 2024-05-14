@@ -25,7 +25,7 @@ const Profile = () => {
 
                 const payload = { "user_id": user_id, "username": UserForm.name, "email": UserForm.email, "phone_number": UserForm.phone_number }
 
-                const update_result =await  axios.put('https://api.selfmade.city/api/users/profile', payload)
+                const update_result = await axios.put(process.env.REACT_APP_API_HOST + '/api/users/profile', payload)
 
                 if (update_result.data && update_result.data.status === "success"){
 
@@ -70,7 +70,7 @@ const Profile = () => {
 
             try {
 
-                const url = "https://api.selfmade.city/api/users/profile/" + user_id
+                const url = process.env.REACT_APP_API_HOST + "/api/users/profile/" + user_id
 
                 const result = await axios.get(url)
 

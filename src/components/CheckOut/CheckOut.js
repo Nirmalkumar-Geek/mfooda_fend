@@ -12,7 +12,7 @@ import { CCard, CFormSelect, CFormInput, CFormTextarea, CButton } from '@coreui/
 import { Navigate } from 'react-router-dom';
 import { clearCart } from '../../redux/reducers';
 
-const stripePromise = loadStripe('pk_test_51OwXLZEvae3ml9CKX3jJjRSrCOL71loUjG2qRRv00bNLTII0WtfEdbwaMzKnadVkbAKJ7DrFUpuWKvV3aAxGcpw500bNSRXz80');
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
 
 const CheckOut = () => {
 
@@ -49,7 +49,7 @@ const CheckOut = () => {
             payload.customer_id = customer_id
             payload.restaurant_id = restaurant_id
             console.log(payload)
-            const result = await axios.post("https://api.selfmade.city/api/payment/create-payment-intent", payload)
+            const result = await axios.post(process.env.REACT_APP_API_HOST + "/api/payment/create-payment-intent", payload)
 
             console.log(result.data)
 
@@ -93,7 +93,7 @@ const CheckOut = () => {
             payload.customer_id = customer_id
             payload.restaurant_id = restaurant_id
             console.log(payload)
-            const result = await axios.post("https://api.selfmade.city/api/payment/create-order", payload)
+            const result = await axios.post(process.env.REACT_APP_API_HOST+"/api/payment/create-order", payload)
 
             console.log(result.data)
 
